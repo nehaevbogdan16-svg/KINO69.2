@@ -2,53 +2,129 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>С Днём Рождения!</title>
+<title>С Днём Рождения 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
   margin: 0;
-  height: 100vh;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  overflow: hidden;
+  background: linear-gradient(160deg, #ff7aa2, #ffc3a0);
   font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+/* Вертикальный Stories-контейнер */
+#story {
+  width: 100vw;
+  height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Стартовый экран */
+#start {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-h1 {
+  justify-content: center;
   color: white;
-  margin: 20px;
-  font-size: 2.5em;
   text-align: center;
+  z-index: 20;
+}
+
+#start h1 {
+  font-size: 2.3em;
+  margin-bottom: 20px;
   text-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  z-index: 10;
 }
 
+#start button {
+  font-size: 1.2em;
+  padding: 15px 35px;
+  border: none;
+  border-radius: 50px;
+  background: white;
+  color: #ff5e8e;
+  cursor: pointer;
+}
+
+/* Коллаж */
 #collage {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
 }
 
+/* Фото */
 .photo {
   position: absolute;
-  width: 180px;
-  max-width: 45vw;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  width: 65%;
+  max-width: 280px;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
   opacity: 0;
-  transform: scale(0.5);
-  transition: all 1s ease;
+  transform: scale(0.6);
+  transition: all 1.2s ease;
+}
+
+/* Финальный экран */
+#final {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 2s ease;
+  padding: 30px;
+}
+
+#final h2 {
+  font-size: 2em;
+  margin-bottom: 15px;
+}
+
+#final p {
+  font-size: 1.2em;
+  line-height: 1.5;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🎉 С Днём Рождения! 🎂</h1>
-<div id="collage"></div>
+<div id="story">
+
+  <!-- Старт -->
+  <div id="start">
+    <h1>💖 Для тебя 💖</h1>
+    <button onclick="start()">Нажми</button>
+  </div>
+
+  <!-- Коллаж -->
+  <div id="collage"></div>
+
+  <!-- Финал -->
+  <div id="final">
+    <h2>С Днём Рождения 🎉</h2>
+    <p>
+      Пусть каждый день<br>
+      будет наполнен любовью,<br>
+      теплом и счастьем 🤍<br><br>
+      Мы тебя очень любим 💕
+    </p>
+  </div>
+
+</div>
+
+<audio id="music" src="music.mp3"></audio>
 
 <script>
 const images = [
@@ -60,22 +136,30 @@ const images = [
 
 let index = 0;
 
-function addPhoto() {
-  if (index >= images.length) return;
+function start() {
+  document.getElementById("start").style.display = "none";
+  document.getElementById("music").play();
+  showPhoto();
+}
+
+function showPhoto() {
+  if (index >= images.length) {
+    setTimeout(showFinal, 1500);
+    return;
+  }
 
   const img = document.createElement("img");
   img.src = images[index];
   img.className = "photo";
 
-  const x = Math.random() * (window.innerWidth - 200);
-  const y = Math.random() * (window.innerHeight - 250);
-  const rotate = Math.random() * 60 - 30;
-  const z = index + 1;
+  const x = Math.random() * 40 + 10;
+  const y = Math.random() * 45 + 15;
+  const rotate = Math.random() * 30 - 15;
 
-  img.style.left = x + "px";
-  img.style.top = y + "px";
+  img.style.left = x + "%";
+  img.style.top = y + "%";
   img.style.transform = `rotate(${rotate}deg) scale(1)`;
-  img.style.zIndex = z;
+  img.style.zIndex = index + 1;
 
   document.getElementById("collage").appendChild(img);
 
@@ -84,10 +168,12 @@ function addPhoto() {
   }, 100);
 
   index++;
-  setTimeout(addPhoto, 1200);
+  setTimeout(showPhoto, 1400);
 }
 
-addPhoto();
+function showFinal() {
+  document.getElementById("final").style.opacity = 1;
+}
 </script>
 
 </body>
