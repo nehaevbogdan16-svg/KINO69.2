@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>С Днём Рождения!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: white;
+  margin: 20px;
+  font-size: 2.5em;
+  text-align: center;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+#collage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.photo {
+  position: absolute;
+  width: 180px;
+  max-width: 45vw;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 1s ease;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎉 С Днём Рождения! 🎂</h1>
+<div id="collage"></div>
+
+<script>
+const images = [
+  "photos/1.jpg",
+  "photos/2.jpg",
+  "photos/3.jpg",
+  "photos/4.jpg"
+];
+
+let index = 0;
+
+function addPhoto() {
+  if (index >= images.length) return;
+
+  const img = document.createElement("img");
+  img.src = images[index];
+  img.className = "photo";
+
+  const x = Math.random() * (window.innerWidth - 200);
+  const y = Math.random() * (window.innerHeight - 250);
+  const rotate = Math.random() * 60 - 30;
+  const z = index + 1;
+
+  img.style.left = x + "px";
+  img.style.top = y + "px";
+  img.style.transform = `rotate(${rotate}deg) scale(1)`;
+  img.style.zIndex = z;
+
+  document.getElementById("collage").appendChild(img);
+
+  setTimeout(() => {
+    img.style.opacity = 1;
+  }, 100);
+
+  index++;
+  setTimeout(addPhoto, 1200);
+}
+
+addPhoto();
+</script>
+
+</body>
+</html>
